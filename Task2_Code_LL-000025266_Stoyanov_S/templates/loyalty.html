@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="loyalty-wrapper">
+
+    <h1 class="loyalty-title">Loyalty Rewards</h1>
+
+    <!--  USER CARD -->
+    <div class="loyalty-card">
+
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+
+        <p class="points">
+            {{ user.points }} Points
+        </p>
+
+        <div class="tier-badge {{ tier|lower }}">
+            {{ tier }} Member
+        </div>
+
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-section">
+
+        <h3>Your Progress</h3>
+
+        <div class="progress-bar">
+            <div class="progress-fill"
+                 style="width: {{ (user.points % 100) }}%">
+            </div>
+        </div>
+
+        <p class="progress-text">
+            {% if tier == "Bronze" %}
+                🔓 {{ 100 - user.points }} points to reach <b>Silver</b>
+            {% elif tier == "Silver" %}
+                🔓 {{ 300 - user.points }} points to reach <b>Gold</b>
+            {% else %}
+                🏆 You reached the highest tier!
+            {% endif %}
+        </p>
+
+    </div>
+
+    <!--  REWARDS -->
+    <div class="rewards">
+
+        <h2>Redeem Rewards</h2>
+
+        <div class="reward-grid">
+
+            <div class="reward-card">
+                <h3>£5 Discount</h3>
+                <p>Use 100 points</p>
+
+                {% if user.points >= 100 %}
+                    <a href="/redeem/5off" class="reward-btn">Redeem</a>
+                {% else %}
+                    <span class="reward-disabled">Not enough points</span>
+                {% endif %}
+            </div>
+
+            <div class="reward-card">
+                <h3>£10 Discount</h3>
+                <p>Use 200 points</p>
+
+                {% if user.points >= 200 %}
+                    <a href="/redeem/10off" class="reward-btn">Redeem</a>
+                {% else %}
+                    <span class="reward-disabled">Not enough points</span>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

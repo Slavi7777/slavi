@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="admin-container">
+
+    <!-- HEADER -->
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <p>System overview and management panel</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="admin-stats">
+
+        <div class="stat-box">
+            <h3>Users</h3>
+            <p>{{ users|length }}</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Products</h3>
+            <p>{{ products|length }}</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Orders</h3>
+            <p>{{ orders|length }}</p>
+        </div>
+
+    </div>
+
+    <!-- GRID -->
+    <div class="admin-grid">
+
+        <!-- USERS -->
+        <div class="panel">
+            <h2>👤 Users</h2>
+
+            <div class="panel-list">
+                {% for user in users %}
+                <div class="panel-item">
+                    <div>
+                        <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                        <small>{{ user.email }}</small>
+                    </div>
+
+                    <span class="role {{ user.role }}">
+                        {{ user.role }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <!-- CENTER -->
+        <div class="center-panel">
+
+            <h2>Control Panel</h2>
+
+            <p>
+                Manage the platform and monitor activity.
+            </p>
+
+            <div class="center-actions">
+                <a href="/products">Products</a>
+                <a href="/producer">Manage Stock</a>
+                <a href="/orders">Orders</a>
+                <a href="/loyalty">Loyalty</a>
+            </div>
+
+        </div>
+
+
+        <!-- ORDERS -->
+        <div class="panel">
+            <h2>🛒 Orders</h2>
+
+            <div class="panel-list">
+                {% for order in orders %}
+                <div class="panel-item">
+
+                    <div>
+                        <strong>Order #{{ order.id }}</strong>
+                        <small>{{ order.user_email }}</small>
+                        <small>{{ order.created_at }}</small>
+
+                        <!-- ITEMS -->
+                        <ul>
+                            {% for item in order_items[order.id] %}
+                            <li>
+                                {{ item.product_name }} (x{{ item.quantity }})
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <span class="stock">
+                        £{{ order.total }}
+                    </span>
+
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

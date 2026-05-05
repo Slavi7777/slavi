@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="products-page">
+
+    <h1 class="page-title">Farm Fresh Products</h1>
+
+    <!-- SEARCH -->
+    <form method="GET" class="search-bar">
+
+        <input
+            type="text"
+            name="search"
+            placeholder="Search products..."
+            value="{{ search or '' }}"
+        >
+
+        <select name="category">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}"
+                    {% if selected_category == cat.id|string %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button class="search-btn">Search</button>
+
+    </form>
+
+    <!-- 🛒 PRODUCTS -->
+    <div class="products-grid">
+
+        {% for item in items %}
+        <div class="product-card">
+
+            <!-- IMAGE -->
+            <div class="image-container">
+                <img src="{{ item.image }}" class="product-img" alt="{{ item.name }}">
+            </div>
+
+            <div class="product-info">
+
+                <!-- TITLE -->
+                <h3>{{ item.name }}</h3>
+
+                <!-- CATEGORY BADGE -->
+                <span class="category-badge">
+                    {{ item.category or "General" }}
+                </span>
+
+                <!-- DESCRIPTION -->
+                <p class="description">
+                    {% if item.description %}
+                        {{ item.description }}
+                    {% elif item.category == "Fruit" %}
+                        Fresh, sweet and full of natural flavour.
+                    {% elif item.category == "Dairy" %}
+                        High-quality dairy product from local farms.
+                    {% elif item.category == "Bakery" %}
+                        Freshly baked and full of taste.
+                    {% else %}
+                        Fresh, locally sourced product.
+                    {% endif %}
+                </p>
+
+                <!-- STOCK STATUS -->
+                <p class="stock
+                    {% if item.stock == 0 %}out
+                    {% elif item.stock <= 5 %}low
+                    {% endif %}">
+
+                    {% if item.stock == 0 %}
+                        ❌ Out of Stock
+                    {% elif item.stock <= 5 %}
+                        ⚠️ Only {{ item.stock }} left
+                    {% else %}
+                        In Stock
+                    {% endif %}
+                </p>
+
+                <!-- PRICE + ACTION -->
+                <div class="product-footer">
+
+                    <span class="price">£{{ item.price }}</span>
+
+                    {% if item.stock > 0 %}
+                        <a href="/add_to_cart/{{ item.id }}" class="btn-cart">
+                            Add
+                        </a>
+                    {% else %}
+                        <span class="btn-disabled">Unavailable</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

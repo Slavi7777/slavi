@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="account-page">
+
+    <div class="form-container">
+        <h1>My Account</h1>
+
+        <form method="POST">
+            <input name="fname" value="{{ user.first_name }}" required>
+            <input name="lname" value="{{ user.last_name }}" required>
+
+            <input value="{{ user.email }}" readonly>
+
+            <button>Update Details</button>
+        </form>
+
+        <br>
+
+        <a href="/orders" class="add-btn">View Order History</a>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="producer-page">
+
+    <h1 class="dashboard-title">Producer Dashboard</h1>
+
+    <div class="products-grid">
+
+        {% for item in items %}
+        <div class="product-card">
+
+            <!-- IMAGE -->
+            <img src="{{ item.image }}" class="product-img" alt="{{ item.name }}">
+
+            <div class="product-body">
+
+                <h3 class="product-title">{{ item.name }}</h3>
+
+                <!--  PRICE ADDED -->
+                <p class="product-price">
+                    £{{ "%.2f"|format(item.price) }}
+                </p>
+
+                <span class="category-badge">
+                    {{ item.category or "General" }}
+                </span>
+
+                <!-- DESCRIPTION -->
+                <p class="product-description">
+                    {{ item.description or "No description added yet." }}
+                </p>
+
+                <!-- STOCK -->
+                <p class="stock
+                    {% if item.stock == 0 %}out
+                    {% elif item.stock <= 5 %}low
+                    {% endif %}">
+
+                    {% if item.stock == 0 %}
+                        Out of Stock
+                    {% elif item.stock <= 5 %}
+                        Only {{ item.stock }} left
+                    {% else %}
+                        {{ item.stock }} in stock
+                    {% endif %}
+                </p>
+
+                <!-- ACTIONS -->
+                <div class="product-actions">
+
+                    <div class="stock-buttons">
+                        <a href="/increase_stock/{{ item.id }}">+</a>
+                        <a href="/decrease_stock/{{ item.id }}">−</a>
+                    </div>
+
+                    <div class="main-buttons">
+                        <a href="/edit_product/{{ item.id }}" class="edit-btn">
+                            Edit
+                        </a>
+                        <a href="/delete_product/{{ item.id }}" class="delete-btn">
+                            Delete
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- CTA -->
+    <div class="dashboard-center">
+        <a href="/add_product" class="add-btn">+ Add New Product</a>
+    </div>
+
+</div>
+
+{% endblock %}

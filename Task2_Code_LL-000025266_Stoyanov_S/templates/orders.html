@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="orders-page">
+
+    <h1 class="orders-title">Your Orders</h1>
+
+    {% if orders %}
+
+        {% for entry in orders %}
+        <div class="order-card">
+
+            <!-- HEADER -->
+            <div class="order-header">
+
+                <div class="order-left">
+                    <h3>Order #{{ entry.order.id }}</h3>
+                    <p class="order-date">{{ entry.order.created_at }}</p>
+
+                    <!--  TRACKING NUMBER -->
+                    <p class="tracking">
+                        Tracking:
+                        <strong>{{ entry.order.tracking_number }}</strong>
+                    </p>
+                </div>
+
+                <div class="order-right">
+                    <div class="order-total">
+                        £{{ "%.2f"|format(entry.order.total) }}
+                    </div>
+
+                    <!-- OPTIONAL STATUS (nice extra feature) -->
+                    <span class="order-status">Processing</span>
+                </div>
+
+            </div>
+
+            <!-- ITEMS -->
+            <div class="order-items">
+
+                <div class="items-header">
+                    <span>Product</span>
+                    <span>Qty</span>
+                    <span>Price</span>
+                </div>
+
+                {% for item in entry["items"] %}
+                <div class="order-item">
+                    <span class="item-name">{{ item.product_name }}</span>
+                    <span class="item-qty">x{{ item.quantity }}</span>
+                    <span class="item-price">£{{ "%.2f"|format(item.price) }}</span>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <p class="no-orders">You have no orders yet.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

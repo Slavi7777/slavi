@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="about-page">
+
+    <!-- HERO -->
+    <section class="about-hero">
+        <div class="hero-overlay">
+            <h1>About Greenfield Local Hub</h1>
+            <p>
+                Fresh food. Local farmers. Sustainable future.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- MAIN CONTENT -->
+    <section class="about-content">
+
+        <!-- OUR STORY -->
+        <div class="about-card">
+            <h2>Our Story</h2>
+            <p>
+                Greenfield Local Hub was founded with one simple idea —
+                to reconnect people with the source of their food.
+            </p>
+            <p>
+                In today’s world, food travels thousands of miles before
+                reaching your plate. We wanted to change that by creating
+                a platform where local farmers can connect directly with
+                customers.
+            </p>
+            <p>
+                What started as a small initiative has grown into a thriving
+                ecosystem supporting sustainable agriculture and local communities.
+            </p>
+        </div>
+
+        <!-- WHO WE ARE -->
+        <div class="about-card">
+            <h2>Who We Are</h2>
+            <p>
+                We are a community-focused platform built to support local farmers
+                and provide customers with access to fresh, high-quality produce.
+            </p>
+            <p>
+                Our system allows producers to manage their products while customers
+                enjoy transparency, freshness, and convenience.
+            </p>
+        </div>
+
+        <!-- OUR IMPACT -->
+        <div class="about-card">
+            <h2>Our Impact</h2>
+            <p>
+                By reducing supply chains, we minimise food waste and lower
+                environmental impact.
+            </p>
+            <p>
+                Every purchase helps support independent farmers and contributes
+                to a more sustainable and resilient food system.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+    <section class="about-stats">
+
+        <div class="stat-box">
+            <h2 class="counter" data-target="100">0</h2>
+            <p>Local Farmers</p>
+        </div>
+
+        <div class="stat-box">
+            <h2 class="counter" data-target="500">0</h2>
+            <p>Products Available</p>
+        </div>
+
+        <div class="stat-box">
+            <h2 class="counter" data-target="1000">0</h2>
+            <p>Happy Customers</p>
+        </div>
+
+    </section>
+
+
+    <!-- VALUES -->
+    <section class="values">
+
+        <h2>Our Values</h2>
+
+        <div class="values-grid">
+
+            <div class="value-card">
+                <h3>🌱 Sustainability</h3>
+                <p>We reduce food miles and promote environmentally friendly practices.</p>
+            </div>
+
+            <div class="value-card">
+                <h3>🤝 Community</h3>
+                <p>We support local farmers and strengthen local economies.</p>
+            </div>
+
+            <div class="value-card">
+                <h3>🥕 Quality</h3>
+                <p>We deliver fresh, high-quality produce you can trust.</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!--  CTA -->
+    <section class="about-cta">
+        <h2>Join the Movement 🌍</h2>
+        <p>Support local farmers and enjoy fresh food today.</p>
+        <a href="/products" class="btn-primary">Explore Products</a>
+    </section>
+
+</div>
+
+
+<!--  COUNTER SCRIPT -->
+<script>
+document.querySelectorAll(".counter").forEach(counter => {
+    const update = () => {
+        const target = +counter.dataset.target;
+        const count = +counter.innerText;
+        const inc = target / 100;
+
+        if (count < target) {
+            counter.innerText = Math.ceil(count + inc);
+            setTimeout(update, 20);
+        } else {
+            counter.innerText = target;
+        }
+    };
+    update();
+});
+</script>
+
+{% endblock %}

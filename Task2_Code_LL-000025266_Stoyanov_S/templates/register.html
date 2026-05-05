@@ -1,0 +1,198 @@
+{% extends "auth_base.html" %}
+{% block content %}
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+        <h1 class="login-title">Create Account 🚀</h1>
+        <p class="login-subtitle">Join the Greenfield Hub</p>
+
+        <!-- BACKEND ERROR (EMAIL EXISTS) -->
+        {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form method="POST" onsubmit="return validateForm()" class="login-form">
+
+            <!-- FIRST NAME -->
+            <div class="input-group">
+                <input name="fname" required>
+                <label>First Name</label>
+            </div>
+
+            <!-- LAST NAME -->
+            <div class="input-group">
+                <input name="lname" required>
+                <label>Last Name</label>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="input-group">
+                <input id="email" name="email" type="email" required>
+                <label>Email Address</label>
+
+                <div class="hint-box" id="emailHint">
+                    Must be a valid email (e.g. user@email.com)
+                </div>
+
+                <div class="error-box" id="emailError"></div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-group">
+                <input id="password" name="password" type="password" required>
+                <label>Password</label>
+
+                <!-- CHECKLIST -->
+                <div class="hint-box" id="passwordHint">
+                    <ul id="passwordChecklist">
+                        <li id="length">❌ At least 8 characters</li>
+                        <li id="uppercase">❌ One uppercase letter</li>
+                        <li id="lowercase">❌ One lowercase letter</li>
+                        <li id="number">❌ One number</li>
+                        <li id="special">❌ One special character (@$!%*?&)</li>
+                    </ul>
+                </div>
+
+                <!-- STRENGTH BAR -->
+                <div class="strength-bar">
+                    <div id="strengthFill"></div>
+                </div>
+
+                <div class="error-box" id="passwordError"></div>
+            </div>
+
+            <p class="role-text">Registering as Customer</p>
+
+            <button type="submit" class="login-btn">
+                Register
+            </button>
+
+        </form>
+
+        <p class="login-footer">
+            Already have an account?
+            <a href="/login">Login</a>
+        </p>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+
+    let emailHint = document.getElementById("emailHint");
+    let passwordHint = document.getElementById("passwordHint");
+
+    let emailError = document.getElementById("emailError");
+    let passwordError = document.getElementById("passwordError");
+
+    let strengthFill = document.getElementById("strengthFill");
+
+    let emailPattern = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+
+    // ===== EMAIL =====
+    email.addEventListener("focus", () => emailHint.style.display = "block");
+    email.addEventListener("blur", () => emailHint.style.display = "none");
+
+    email.addEventListener("input", function () {
+        if (this.value.length === 0) {
+            emailError.style.display = "none";
+            email.style.borderColor = "";
+            return;
+        }
+
+        emailError.style.display = "block";
+
+        if (!emailPattern.test(this.value)) {
+            emailError.innerHTML = "❌ Invalid email";
+            emailError.style.background = "#b22222";
+            email.style.borderColor = "red";
+        } else {
+            emailError.innerHTML = "✅ Valid email";
+            emailError.style.background = "#2e7d32";
+            email.style.borderColor = "green";
+        }
+    });
+
+    // ===== PASSWORD =====
+    password.addEventListener("focus", () => passwordHint.style.display = "block");
+    password.addEventListener("blur", () => passwordHint.style.display = "none");
+
+    password.addEventListener("input", function () {
+        let value = this.value;
+
+        let checks = {
+            length: value.length >= 8,
+            uppercase: /[A-Z]/.test(value),
+            lowercase: /[a-z]/.test(value),
+            number: /\d/.test(value),
+            special: /[@$!%*?&]/.test(value)
+        };
+
+        for (let key in checks) {
+            let item = document.getElementById(key);
+
+            if (checks[key]) {
+                item.innerHTML = "✅ " + item.textContent.substring(2);
+                item.style.color = "lightgreen";
+            } else {
+                item.innerHTML = "❌ " + item.textContent.substring(2);
+                item.style.color = "white";
+            }
+        }
+
+        let strength = Object.values(checks).filter(Boolean).length;
+
+        if (strength <= 2) {
+            strengthFill.style.width = "30%";
+            strengthFill.style.background = "red";
+        } else if (strength <= 4) {
+            strengthFill.style.width = "60%";
+            strengthFill.style.background = "orange";
+        } else {
+            strengthFill.style.width = "100%";
+            strengthFill.style.background = "green";
+        }
+
+        if (value.length === 0) {
+            passwordError.style.display = "none";
+            password.style.borderColor = "";
+            strengthFill.style.width = "0%";
+            return;
+        }
+
+        passwordError.style.display = "block";
+
+        if (Object.values(checks).every(Boolean)) {
+            passwordError.innerHTML = "✅ Strong password";
+            passwordError.style.background = "#2e7d32";
+            password.style.borderColor = "green";
+        } else {
+            passwordError.innerHTML = "❌ Password not strong enough";
+            passwordError.style.background = "#b22222";
+            password.style.borderColor = "red";
+        }
+    });
+
+});
+
+function validateForm() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    let emailPattern = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+    let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+    return emailPattern.test(email) && passwordPattern.test(password);
+}
+</script>
+
+{% endblock %}

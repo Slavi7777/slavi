@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="cart-page">
+
+    <h1 class="page-title">My Cart</h1>
+
+    {% if cart and cart|length > 0 %}
+
+    <div class="cart-items">
+
+        {% for item in cart %}
+        <div class="cart-item">
+
+            <!-- IMAGE -->
+            <img src="{{ item.image }}" class="cart-img" alt="{{ item.name }}">
+
+            <!-- INFO -->
+            <div class="cart-info">
+                <h3>{{ item.name }}</h3>
+                <p class="price">£{{ item.price }}</p>
+            </div>
+
+            <!-- QUANTITY -->
+            <div class="cart-quantity">
+                <a href="/decrease/{{ item.id }}" class="qty-btn">−</a>
+                <span>{{ item.quantity }}</span>
+                <a href="/increase/{{ item.id }}" class="qty-btn">+</a>
+            </div>
+
+            <!-- SUBTOTAL -->
+            <div class="cart-subtotal">
+                £{{ item.price * item.quantity }}
+            </div>
+
+            <!-- REMOVE -->
+            <a href="/remove/{{ item.id }}" class="remove-btn">✕</a>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!--  TOTAL + CHECKOUT -->
+    <div class="cart-summary">
+
+        <h2>Total: £{{ total }}</h2>
+
+        <a href="/checkout" class="checkout-btn">
+            Proceed to Checkout →
+        </a>
+
+    </div>
+
+    {% else %}
+
+    <!-- EMPTY CART -->
+    <div class="empty-cart">
+        <p>Your cart is empty</p>
+        <a href="/products" class="btn">Shop Now</a>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

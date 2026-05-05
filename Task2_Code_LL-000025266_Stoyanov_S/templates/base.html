@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FarmHub</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header class="main-header" role="banner">
+
+    <!-- LOGO -->
+    <a href="{{ url_for('home') }}" class="logo">
+        <img src="https://i.postimg.cc/Xq637KZ5/Logo.png" alt="FarmHub Logo">
+    </a>
+
+    <!-- NAV -->
+    <nav class="nav-links" role="navigation">
+
+        <a href="/">Home</a>
+        <a href="/products">Products</a>
+        <a href="/loyalty">Loyalty</a>
+        <a href="/contact">Contact</a>
+        <a href="/about">About</a>
+        <a href="/orders">Orders</a>
+        <a href="/account">My Account</a>
+
+        <!-- CART -->
+        <a href="/cart" class="cart-link">
+            <div class="cart-box">
+                <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Shopping cart">
+                <span class="cart-count">
+                    {{ session.get('cart', []) | sum(attribute='quantity') }}
+                </span>
+            </div>
+            <span class="cart-text">Basket</span>
+        </a>
+
+        {% if session.get("role") == "admin" %}
+            <a href="/admin">Admin</a>
+        {% elif session.get("role") == "producer" %}
+            <a href="/producer">Producer</a>
+        {% endif %}
+
+        <a href="/logout" class="logout">Logout</a>
+
+    </nav>
+
+</header>
+
+
+<!-- MAIN CONTENT -->
+<main role="main">
+    {% block content %}{% endblock %}
+</main>
+
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+
+    <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-section">
+            <h2>Greenfield Hub</h2>
+            <p>
+                Fresh food from local farmers. Supporting communities,
+                sustainability, and better living.
+            </p>
+        </div>
+
+        <!-- LINKS -->
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <a href="/">Home</a>
+            <a href="/products">Products</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
+        </div>
+
+        <!-- ACCOUNT -->
+        <div class="footer-section">
+            <h3>Your Account</h3>
+            <a href="/cart">Basket</a>
+            <a href="/loyalty">Loyalty</a>
+            <a href="/login">Login</a>
+        </div>
+
+        <!-- CONTACT -->
+        <div class="footer-section">
+            <h3>Contact</h3>
+            <p>📧 support@greenfieldhub.com</p>
+            <p>📞 +44 123 456 789</p>
+            <p>📍 United Kingdom</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Greenfield Local Hub. All rights reserved.</p>
+    </div>
+
+</footer>
+
+
+<script>
+(function(d){
+    var s = d.createElement("script");
+    s.setAttribute("data-account", "free");
+
+    /* 🔥 FORCE RIGHT SIDE */
+    s.setAttribute("data-position", "3");
+    /* 3 = top right */
+
+    s.setAttribute("data-color", "#2f4f2f");
+    s.setAttribute("data-size", "large");
+
+    s.src = "https://cdn.userway.org/widget.js";
+    (d.body || d.head).appendChild(s);
+})(document);
+</script>
+

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="home-container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-text">
+            <h1>Fresh From Farm to Your Table</h1>
+
+            <p>
+                Discover locally sourced produce, support farmers,
+                and enjoy sustainable food delivered to your community.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/products" class="btn-primary">Shop Now</a>
+                <a href="/loyalty" class="btn-secondary">Earn Rewards</a>
+            </div>
+
+            <!-- 🌤 WEATHER (NEW) -->
+            <div class="weather-box">
+                <h3>🌤 Local Weather</h3>
+                <p class="weather-temp">{{ weather.temp }}°C</p>
+                <p class="weather-desc">{{ weather.desc }}</p>
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+            <img src="https://squidex-rsp.ari.production.ldv-svcs.live/api/assets/or3295/55788767-4367-40e6-b3a7-3a530dcfb3fe/fresh-vegetables-fruits-large-farms-harvesting-1-.png?version=0">
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+    <section class="stats">
+
+        <div class="stat">
+            <h2>100+</h2>
+            <p>Local Farmers</p>
+        </div>
+
+        <div class="stat">
+            <h2>500+</h2>
+            <p>Products</p>
+        </div>
+
+        <div class="stat">
+            <h2>1000+</h2>
+            <p>Happy Customers</p>
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features">
+
+        <div class="feature">
+            <h3>🌱 Fresh & Organic</h3>
+            <p>Hand-picked produce straight from farms.</p>
+        </div>
+
+        <div class="feature">
+            <h3>🚜 Support Local</h3>
+            <p>Empowering farmers and local businesses.</p>
+        </div>
+
+        <div class="feature">
+            <h3>⚡ Easy Ordering</h3>
+            <p>Simple, fast, and reliable experience.</p>
+        </div>
+
+    </section>
+
+
+    <!-- CATEGORIES -->
+    <section class="categories">
+
+        <h2>Shop by Category</h2>
+
+        <div class="category-grid">
+
+            <a href="/products?category=1" class="category">🍎 Fruits</a>
+            <a href="/products?category=2" class="category">🥛 Dairy</a>
+            <a href="/products?category=3" class="category">🍞 Bakery</a>
+            <a href="/products?category=4" class="category">🥕 Vegetables</a>
+
+        </div>
+
+    </section>
+
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+
+        <h2>What Our Customers Say</h2>
+
+        <div class="testimonial-grid">
+
+            <div class="testimonial">
+                <p>"Amazing quality and super fresh produce!"</p>
+                <span>- Sarah</span>
+            </div>
+
+            <div class="testimonial">
+                <p>"I love supporting local farmers through this platform."</p>
+                <span>- James</span>
+            </div>
+
+            <div class="testimonial">
+                <p>"Fast delivery and great service every time."</p>
+                <span>- Emily</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL CTA -->
+    <section class="cta">
+
+        <h2>Start Your Fresh Journey Today</h2>
+
+        <a href="/products" class="btn-primary">Explore Products</a>
+
+    </section>
+
+</div>
+
+{% endblock %}

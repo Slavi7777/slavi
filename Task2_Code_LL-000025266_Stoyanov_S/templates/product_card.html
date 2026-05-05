@@ -1,0 +1,55 @@
+<div class="product-card">
+
+    <!-- IMAGE -->
+    <div class="image-container">
+        <img src="{{ item.image }}" class="product-img" alt="{{ item.name }}">
+    </div>
+
+    <div class="product-info">
+
+        <!-- TITLE -->
+        <h3>{{ item.name }}</h3>
+
+        <!-- CATEGORY BADGE -->
+        <span class="category-badge">
+            {{ item.category or "General" }}
+        </span>
+
+        <!-- DESCRIPTION -->
+        <p class="description">
+            {{ item.description or "Fresh, locally sourced product." }}
+        </p>
+
+        <!-- STOCK STATUS -->
+        <p class="stock
+            {% if item.stock == 0 %}out
+            {% elif item.stock <= 5 %}low
+            {% endif %}">
+
+            {% if item.stock == 0 %}
+                ❌ Out of Stock
+            {% elif item.stock <= 5 %}
+                ⚠️ Only {{ item.stock }} left
+            {% else %}
+                Stock: {{ item.stock }}
+            {% endif %}
+        </p>
+
+        <!-- ACTIONS -->
+        <div class="product-footer">
+
+            <div class="stock-controls">
+                <a href="/increase_stock/{{ item.id }}" class="small-btn">+</a>
+                <a href="/decrease_stock/{{ item.id }}" class="small-btn">-</a>
+            </div>
+
+            <div class="manage-actions">
+                <a href="/edit_product/{{ item.id }}" class="edit-btn">Edit</a>
+                <a href="/delete_product/{{ item.id }}" class="delete-btn">Delete</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

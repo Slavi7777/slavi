@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="checkout-wrapper">
+
+    <h1 class="checkout-title">Secure Checkout</h1>
+
+    <!--  GLOBAL ERROR -->
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="POST">
+
+        <div class="checkout-container">
+
+            <!-- LEFT SIDE -->
+            <div class="checkout-form">
+
+                <!-- 🚚 SHIPPING -->
+                <div class="form-card">
+
+                    <!--  POSTCODE ERROR (JS will use this) -->
+                    <div id="postcode-error" class="error-message" style="display:none;"></div>
+
+                    <h2>Shipping Address</h2>
+
+                    <input type="text" name="fullname"
+                           placeholder="Full Name"
+                           pattern="[A-Za-z ]{3,}"
+                           required>
+
+                    <!--  POSTCODE LOOKUP -->
+                    <div class="row">
+                        <input type="text" id="postcode" name="postcode"
+                               placeholder="Postcode (e.g. SW1A 1AA)"
+                               required>
+
+                        <button type="button" class="lookup-btn" onclick="fetchAddress()">
+                            Find Address
+                        </button>
+                    </div>
+
+                    <input type="text" id="city" name="city"
+                           placeholder="Town / City"
+                           readonly required>
+
+                    <input type="text" id="county" name="county"
+                           placeholder="County"
+                           readonly required>
+
+                    <input type="text" name="country"
+                           value="United Kingdom"
+                           readonly>
+
+                    <input type="text" id="address" name="address"
+                           placeholder="House number and street (e.g. 10 Downing Street)"
+                           minlength="5"
+                           required>
+
+                </div>
+
+                <!--  PAYMENT -->
+                <div class="form-card">
+                    <h2>Payment Details</h2>
+
+                    <input type="text" name="card"
+                           placeholder="Card Number"
+                           pattern="[0-9]{16}"
+                           maxlength="16"
+                           required>
+
+                    <div class="row">
+                        <input type="text" name="expiry"
+                               placeholder="MM/YY"
+                               pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
+                               required>
+
+                        <input type="text" name="cvv"
+                               placeholder="CVV"
+                               pattern="[0-9]{3}"
+                               maxlength="3"
+                               required>
+                    </div>
+
+                    <input type="text" name="cardname"
+                           placeholder="Cardholder Name"
+                           pattern="[A-Za-z ]{5,}"
+                           required>
+
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        Save payment details securely
+                    </label>
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="order-summary">
+
+                <h2>Order Summary</h2>
+
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span>£{{ "%.2f"|format(total) }}</span>
+                </div>
+
+                <div class="summary-line">
+                    <span>Shipping</span>
+                    <span>£{{ "%.2f"|format(5) }}</span>
+                </div>
+
+                <div class="summary-line">
+                    <span>Tax (10%)</span>
+                    <span>£{{ "%.2f"|format(total * 0.1) }}</span>
+                </div>
+
+                {% if discount %}
+                <div class="summary-line" style="color: #2f4f2f; font-weight: bold;">
+                    <span>Discount</span>
+                    <span>-£{{ discount }}</span>
+                </div>
+                {% endif %}
+
+                <hr>
+
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span>£{{ "%.2f"|format(final_total) }}</span>
+                </div>
+
+                <button type="submit" class="complete-btn">
+                    Complete Order →
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+<!-- UPDATED SCRIPT -->
+<script>
+async function fetchAddress() {
+
+    let postcode = document.getElementById("postcode").value.trim();
+    let errorBox = document.getElementById("postcode-error");
+
+    errorBox.style.display = "none";
+    errorBox.innerText = "";
+
+    if (!postcode) {
+        showError("❌ Please enter a postcode");
+        return;
+    }
+
+    postcode = postcode.replace(" ", "").toUpperCase();
+
+    try {
+        let response = await fetch(`https://api.postcodes.io/postcodes/${postcode}`);
+        let data = await response.json();
+
+        if (data.status !== 200) {
+            showError("❌ Invalid postcode");
+            return;
+        }
+
+        document.getElementById("city").value = data.result.admin_district;
+        document.getElementById("county").value = data.result.region;
+
+        document.getElementById("address").focus();
+
+    } catch (error) {
+        showError("❌ Error fetching address");
+    }
+}
+
+function showError(message) {
+    let errorBox = document.getElementById("postcode-error");
+    errorBox.style.display = "block";
+    errorBox.innerText = message;
+}
+</script>
+
+{% endblock %}
